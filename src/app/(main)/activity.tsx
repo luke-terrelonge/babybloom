@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { View, Text, StyleSheet, FlatList, Pressable, Alert, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
@@ -136,7 +136,14 @@ export default function ActivityScreen() {
             <View style={s.entryRow}>
               <Text style={s.entryIcon}>{KIND_ICONS[item._kind]}</Text>
               <View style={s.entryBody}>
-                <Text style={s.entryDetail}>{entryDetail(item)}</Text>
+                <View style={s.entryTitleRow}>
+                  <Text style={s.entryDetail}>{entryDetail(item)}</Text>
+                  {(item as any).source === 'voice' && (
+                    <View style={s.voiceBadge}>
+                      <Ionicons name="mic" size={10} color="#ffffff" />
+                    </View>
+                  )}
+                </View>
                 <Text style={s.entryTime}>{format(new Date(item._time), 'h:mm a')}</Text>
               </View>
               {isParent && (
@@ -169,6 +176,8 @@ const s = StyleSheet.create({
   entryRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', borderRadius: 12, padding: 14, borderWidth: 1, borderColor: '#F3F4F6' },
   entryIcon: { fontSize: 24, marginRight: 14 },
   entryBody: { flex: 1 },
+  entryTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  voiceBadge: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#4DB6AC', alignItems: 'center', justifyContent: 'center' },
   entryDetail: { fontSize: 15, fontWeight: '500', color: '#1A1A1A' },
   entryTime: { fontSize: 13, color: '#9CA3AF', marginTop: 3 },
   deleteBtn: { padding: 8 },
