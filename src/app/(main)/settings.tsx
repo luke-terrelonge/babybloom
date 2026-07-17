@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, Alert } from 'react-native'
+import { View, Text, StyleSheet, Pressable, Alert, Platform } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
@@ -25,20 +25,22 @@ export default function SettingsScreen() {
   const { clearLogs } = useLogsStore()
   const { reset: resetOnboarding } = useOnboardingStore()
 
+  async function doSignOut() {
+    await supabase.auth.signOut()
+    clearAuth()
+    setBabies([]); setActiveBaby(null); setMembers([])
+    clearLogs()
+    resetOnboarding()
+  }
+
   async function handleSignOut() {
+    if (Platform.OS === 'web') {
+      if (window.confirm('Are you sure you want to sign out?')) await doSignOut()
+      return
+    }
     Alert.alert('Sign out', 'Are you sure you want to sign out?', [
       { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Sign out',
-        style: 'destructive',
-        onPress: async () => {
-          await supabase.auth.signOut()
-          clearAuth()
-          setBabies([]); setActiveBaby(null); setMembers([])
-          clearLogs()
-          resetOnboarding()
-        },
-      },
+      { text: 'Sign out', style: 'destructive', onPress: doSignOut },
     ])
   }
 

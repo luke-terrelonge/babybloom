@@ -54,6 +54,8 @@ export default function Step6SummaryScreen() {
 
   async function onLooksGood() {
     if (!user) return
+    const { data: { session } } = await supabase.auth.getSession()
+    console.log('[step-6] zustand user:', user?.id, '| supabase session:', session?.user?.id ?? 'NULL')
     setSaving(true)
     try {
       // Update profile display name (avatar upload deferred — requires storage setup)
@@ -93,6 +95,7 @@ export default function Step6SummaryScreen() {
 
       router.push('/(onboarding)/step-7-plan')
     } catch (e: any) {
+      console.error('[step-6] onLooksGood error:', e)
       Alert.alert('Error', e?.message ?? 'Something went wrong. Please try again.')
     } finally {
       setSaving(false)
