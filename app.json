@@ -1,4 +1,4 @@
-{
+﻿{
   "expo": {
     "name": "BabyBloom",
     "slug": "babybloom",
@@ -8,7 +8,7 @@
     "scheme": "babybloom",
     "userInterfaceStyle": "light",
     "ios": {
-      "icon": "./assets/expo.icon",
+      "icon": "./assets/images/icon.png",
       "bundleIdentifier": "com.babybloom.app",
       "supportsTablet": false
     },
